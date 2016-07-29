@@ -1,0 +1,67 @@
+#path to tools 
+# GLOBALPARAM['PATHDEF'] is the path of the script
+#mplayer
+GLOBALPARAM['mplayer']="/usr/local/bin/mplayer"
+#mencoder
+GLOBALPARAM['mencoder']="/usr/local/bin/mencoder"
+#handbrake
+GLOBALPARAM['handbrake']="/usr/local/bin/HandBrakeCLI"
+#MP4Box
+GLOBALPARAM['MP4Box']="/usr/local/bin/MP4Box"
+#atomicparsley
+GLOBALPARAM['atomicparsley']="/usr/local/bin/atomicparsley"
+
+GLOBALPARAM['useffmpeg']=False #WIP
+
+#HTTP Proxy if needed (comment out if not)
+#GLOBALPARAM['HTTPPROXY']={'http': 'http://ip:port/'}
+GLOBALPARAM['HTTPPROXY']={}
+
+#Verbose log (default value False)
+#GLOBALPARAM['VERBOSE']=True
+
+# Default destination dir 
+# (default value is "" meaning in the same dir that the source file)
+#GLOBALPARAM['DESTDIR']="e:/temp"
+#GLOBALPARAM['DESTDIR']="Q:/iTunes/temp/iTunes Media/Automatically Add to iTunes"
+GLOBALPARAM['DESTDIR']="/Users/christophegenova/Movies"
+
+# Final destination dir
+# (default value is "" meaning in that the DESTDIR is the final dir)
+# This is usefull if you want to automatically add the file to iTunes using the "" dir. 
+# In that case, the file move needs to be very fast otherwise iTunes is going to think 
+# that the file is not complete. If the temporary OS directory is not on the same disk 
+# than the iTunes database, you are going to have some issue and you should set the
+# DESTDIR to a temporary dir that is on the same disk than the iTunes database
+#GLOBALPARAM['FINALDIR']="Q:/iTunes/iTunes Media/Automatically Add to iTunes"
+GLOBALPARAM['FINALDIR']="/Users/christophegenova/Music/iTunes/iTunes Media/Automatically Add to iTunes/"
+
+# Default Transcode param 
+# 0: iPad3 1:iPad/iPhone4 2:iphone3G 3:SD/FULLHD 4: HD/FULLHD 5:SD/HD/FULLHD 6:Add sub and tag only 7: just copy the video
+# in case 3-4-5: 2 or 3 transcodes are done but only one file is shown in iTunes with HD/SD flag 
+# default value 1
+GLOBALPARAM['DEVICECONFS']=0
+
+# Debug
+GLOBALPARAM['SHORT']="  --start-at duration:150 --stop-at duration:152"
+
+GLOBALPARAM['SHOWPREFS']=False
+GLOBALPARAM['TAGLAN']="en"
+GLOBALPARAM['SUBLAN']="fre"
+
+# number of // encoding
+GLOBALPARAM['NBT']=1
+
+import platform
+
+if platform.system() != "Darwin":
+	if platform.system() != "Windows":
+		GLOBALPARAM['mplayer']="mplayer"
+		GLOBALPARAM['mencoder']="mencoder"
+		GLOBALPARAM['atomicparsley']="/home/genovch/iphonencode/atomicparsley"
+		GLOBALPARAM['MP4Box']="/home/genovch/iphonencode/MP4Box"
+
+	if platform.node() == "HCE-UZ80010066":
+		GLOBALPARAM['HTTPPROXY']={'http': 'http://3.187.59.236:9400/', 'https': 'http://3.187.59.236:9400/' }
+		GLOBALPARAM['USEPROXYPHP']=True
+

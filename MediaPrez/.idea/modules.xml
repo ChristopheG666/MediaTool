@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Lib/.idea/Lib.iml" filepath="$PROJECT_DIR$/../Lib/.idea/Lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MediaPrez.iml" filepath="$PROJECT_DIR$/.idea/MediaPrez.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../iphoneencode/.idea/iphoneencode.iml" filepath="$PROJECT_DIR$/../iphoneencode/.idea/iphoneencode.iml" />
+    </modules>
+  </component>
+</project>

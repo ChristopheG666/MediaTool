@@ -1,0 +1,576 @@
+
+<html><head><link rel="StyleSheet" type="text/css" href="exportdetails_item_popcorn.css"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title><TAGFORPARSING>Title<TAGFORPARSING></title>
+<script type="text/javascript">
+    asEpisodePlot = new Array('0');
+    asEpisodeTitle = new Array('0');
+    asEpisodeImage = new Array('0');
+    asEpisodeTitleShort = new Array('0');
+    asEpisodeNo = new Array('0');
+    asEpisodeUrl = new Array('0');
+
+<TAGFORPARSINGINDENT>
+    asEpisodeTitle.push("<TAGFORPARSING>EpisodNameNOCR<TAGFORPARSING>");
+    asEpisodePlot.push("<TAGFORPARSING>OverviewNOCR<TAGFORPARSING>");
+    asEpisodeUrl.push("<TAGFORPARSING>Filename<TAGFORPARSING>");
+    asEpisodeNo.push("<TAGFORPARSING>EpisodNum<TAGFORPARSING>");
+    asEpisodeTitleShort.push("UNKNOWN");
+<TAGFORPARSINGINDENT>
+    var episodeId = 1;
+    var episodeName = 1;
+    var showEpisdoeInfos = true;
+    var focusId=false;
+    var url = false;
+    var playListActive = false;
+    toggleShow = new Array();
+    var sIdLinkPrefix = 'a_e_';
+    var sIdSpanPrefix = 's_e_';
+    var sIdTvPrefix = 't_e_';
+    var iCnt = 0;
+    var iEpisodesPerPage = 20;
+    var fMoved = false;
+    var iEpisodesLength = asEpisodePlot.length - 1;
+
+    // in here all hidden Objects are saved
+    var asShowHide = new Object();
+
+     
+    var fUseTvImages = false;
+
+    asShowHide['PosterTd'] = true;
+    asShowHide['movieInfos'] = true;
+    asShowHide['movieInfos'] = true;
+
+    var showPlotwithBtn = false;
+    
+    iEpisodeId=1;
+
+    var asClasses = new Object();
+
+    iFirstEpisodeId = 1;
+  	iLastEpisodeId = iEpisodesLength;
+
+    function setFocusId(x)
+		{
+			focusId = sIdLinkPrefix + x;
+		}
+
+    function setEpisodeUrl(x)
+		{
+			var y = iCnt + x;
+			url = buildUrl(y);
+			document.getElementById('openEpisode').setAttribute("href",url);
+		}
+
+		function setPlaylistIcon(hide)
+		{
+			if (playListActive == true)
+			{
+				if (typeof hide == 'undefined')
+				{
+					
+						PlaylistIcon();
+					
+					  hideItem('episodenInfos');
+  					
+
+
+					showEpisdoeInfos = true;
+				}
+				else
+				{
+					
+						PlaylistIcon(true);
+					
+					playListActive = false;
+				}
+			}
+		}
+
+		function PlaylistIcon(hide)
+		{
+			if (playListActive == true)
+			{
+				if (typeof hide == 'undefined')
+				{
+					
+						document.getElementById('playlistIcon').setAttribute("src",'pictures/folder_document.png');
+					
+				}
+				else
+				{
+					
+						document.getElementById('playlistIcon').setAttribute("src",'pictures/folder_closed.png');
+					
+					playListActive = false;
+				}
+			}
+		}
+
+		function showPlaylistIcon()
+		{
+			if (playListActive == false)
+			{
+				playListActive = true;
+				PlaylistIcon();
+			}
+		}
+
+		function setPlaylistUrl(moveout)
+		{
+			url = '#';
+			if (typeof moveout == 'undefined')
+			{
+				playListActive = true;
+				setPlaylistIcon();
+				url = document.getElementById('playlist').href;
+
+				document.getElementById('playlistIcon').setAttribute("vod",'playlist');
+			}
+
+			document.getElementById('openEpisode').setAttribute("vod",'playlist');
+			document.getElementById('openEpisode').setAttribute("href",url);
+		}
+
+    function show(iElId, showInfos)
+    {
+      var x = iElId;
+      var y = Math.floor(iCnt) + Math.floor(x);
+
+      // ReverseOrder
+      
+
+
+    	setFocusId(y);
+      // Playlisticon ändern, da hier nur noch Episoden ausgegeben werden
+      setPlaylistIcon(true);
+      setEpisodeUrl(x);
+    	iEpisodeId = x;
+
+      if (showPlotwithBtn == true && typeof showInfos == 'undefined' )
+      	return true;
+
+      if (showEpisdoeInfos )
+        showItem('episodenInfos');
+
+    	if ( episodeId == 1 )
+      {
+        episodeId = document.getElementById('episodeId');
+      }
+
+
+      episodeId.firstChild.nodeValue = asEpisodePlot[y];
+
+      if ( episodeName == 1 )
+      {
+        episodeName = document.getElementById('episodeName');
+      }
+      episodeName.firstChild.nodeValue = asEpisodeTitle[y];
+
+      
+    }
+    function hide(x)
+    {
+      if (asShowHide['episodenInfos'] == false)
+        return false;
+
+      if ( episodeId == 1 )
+        episodeId = document.getElementById('episodeId');
+      episodeId.firstChild.nodeValue = "";
+      if ( episodeName == 1 )
+        episodeName = document.getElementById('episodeName');
+      episodeName.firstChild.nodeValue = "";
+
+      hideItem('episodenInfos');
+      focusId=false;
+
+      
+
+    }
+
+		/*
+		* sets the focus to the given
+		*/
+		function setFocus(iElId)
+		{
+
+		  if (x == 'first')
+		  	x = iFirstEpisodeId;
+		  else if (x == 'last')
+		  	x = iLastEpisodeId;
+
+		  //var x = asEpisodeNo[iElId];
+		  var x = iElId;
+
+			setFocusId(x);
+		  document.getElementById(focusId).focus();
+		  show(x);
+		}
+
+		/*
+		* toggles Movie/Tv Show Infos on/off
+		* if $infoTogglesPoster=true it toggles also the poster on/off
+		*/
+		function toggleInfo()
+		{
+
+			toggleEpisodeDetails();
+				if ((asShowHide['movieInfos'] != true && asShowHide['PosterTd']  == true )|| asShowHide['movieInfos'] == true && asShowHide['PosterTd']  != true)
+				{
+					showHide('movieInfos');
+				}
+				else
+				{
+					showHide('movieInfos');
+					showHide('PosterTd');
+				}
+				
+
+		}
+
+		/*
+		* toggles Episode details on/off
+		* is only needed, if showPlotwithBtn is set to true
+		*/
+		function toggleEpisodeDetails()
+		{
+			if (typeof asShowHide['episodenInfos'] == 'undefined' || asShowHide['episodenInfos'] == false )
+				show(iEpisodeId, true);
+			else
+				hide(iEpisodeId);
+		}
+
+
+		var iLastPageId = 1;
+		/*
+		* scroll episode-list "pages" up and down
+		* is only needed, if more episodes than iEpisodesPerPage are present
+		* @var boolean		if true, episodes n + iEpisodesPerPage are activated
+		*/
+		function scrollLinks(down)
+	  {
+
+		  var iLoop = iEpisodesPerPage;
+
+  		if (typeof down == 'undefined')
+  			iCnt = Math.floor(iCnt - iLoop);
+  		else
+  			iCnt = Math.floor(iCnt + iLoop);
+
+  		var iPage = iCnt / iEpisodesPerPage +1;
+
+  		// page 1
+			if (iCnt == 0)
+			{
+				showDownLink();
+				showHideNavButtons(false, true);
+			}
+  		else if (iCnt < 0) // page -1
+			{
+				iCnt = Math.floor(iCnt + iLoop);
+				// set focus to first episode
+				setFocus(1);
+				return false;
+			}
+			else if (iCnt +1 > iEpisodesLength) //last page +1
+			{
+				iCnt = Math.floor(iCnt - iLoop);
+				// set focus to last episode
+				setFocus(iEpisodesLength - iCnt);
+				return false;
+			}
+			else if (Math.floor(iCnt + iLoop) >= iEpisodesLength) // last page
+			{
+				// hide down button
+			  showHideNavButtons(true, true);
+			  // and set up btn visible
+				showHideNavButtons(false, false);
+			}
+			else //all pages between 1 and last
+			{
+			  // show up btn
+				showHideNavButtons(false, false);
+				// show down btn
+				showHideNavButtons(true, false);
+			}
+			//console.log(iCnt);
+
+			document.getElementById('pageCount').firstChild.nodeValue = ' ' + iPage + ' / ' + iPages + ' (' + iEpisodesLength + ')';
+
+			var iLastId = 0;
+
+
+		  for (var i = 1; i <= iLoop; i++)
+	  	{
+	  	  var iElId = i;
+	  	  var sLinkId = sIdLinkPrefix + iElId;
+	  	  var sSpanId = sIdSpanPrefix + iElId;
+	  	  var sTvId = sIdTvPrefix + iElId;
+
+
+	  	  var elLink = document.getElementById(sLinkId);
+	  		var elSpan = document.getElementById(sSpanId);
+	  		var elTvID = document.getElementById(sTvId);
+	  		
+  		  var no = Math.floor(iCnt + i);
+
+  			if (no > iEpisodesLength)
+  			{
+					iLastId = i;
+  				elLink.setAttribute("class",'hidden');
+					elSpan.setAttribute("class", 'hidden');
+		  		elTvID.setAttribute("class",'hidden');
+		  		asShowHide[sLinkId] = false;
+		  		asShowHide[sSpanId] = false;
+		  		asShowHide[sTvId] = false;
+  			}
+  			
+  			else
+  			{
+  			  if (i > iLastPageId)
+  			  {
+  			   iLastPageId = i;
+  			  }
+		  		elLink.setAttribute("href",buildUrl(no));
+		  		var iEpisodeNo = asEpisodeNo[no];
+		  		if (iEpisodeNo < 10)
+		  		  iEpisodeNo = '0' + iEpisodeNo;
+		  		
+		  			var sSpanValue =iEpisodeNo + '. ' + asEpisodeTitleShort[no];
+		  		
+
+		  		elSpan.firstChild.nodeValue=sSpanValue;
+		  		elTvID.setAttribute("TVID",asEpisodeNo[no]);
+
+		  		if (asShowHide[sLinkId] == false)
+		  		{
+		  			elLink.setAttribute("class",'nowrap smallSize visible');
+						elSpan.setAttribute("class", 'visible');
+			  		elTvID.setAttribute("class",'visible');
+			  		asShowHide[sLinkId] = true;
+  		  		asShowHide[sSpanId] = true;
+  		  		asShowHide[sTvId] = true;
+		  		}
+
+		  	}
+	  	}
+
+	  	if (typeof down == 'undefined')
+	  	{
+	  	  // litte timeout is needed - caused by dramaqueen gaya
+	  	  window.setTimeout("setFocus(iLastPageId)", 1);
+	  	}
+	  	else
+	  	  setFocus(1);
+	  }
+
+
+	  /*
+		* shows or hides the episode-nav-buttons
+		* @var boolean		if true, it affects the down btn, if undefined or false it affects the up btn
+		* @var boolean		if true affected btn wil be hidden, otherwise it will be shown
+		*/
+		function showHideNavButtons(down, hide)
+	  {
+	  	if (typeof hide == 'undefined' || hide == false)
+	  		var sClass = 'visible';
+	  	else
+	  		var sClass = 'hidden';
+
+	  	if (typeof down == 'undefined' || down == false)
+	  	{
+	  	  document.getElementById('nav_up').setAttribute("class",sClass);
+	  	  if (sClass == 'visible')
+	  	    asShowHide['nav_up'] = true;
+	  	  else
+	  	    asShowHide['nav_up'] = false;
+	  	}
+	  	else
+	  	{
+	  		document.getElementById('nav_down').setAttribute("class",sClass);
+	  		if (sClass == 'visible')
+	  	    asShowHide['nav_down'] = true;
+	  	  else
+	  	    asShowHide['nav_down'] = false;
+	  	}
+	  }
+
+	  /*
+		* helper function which is called, after page load
+		*/
+	  function showDownLink()
+	  {
+	  	if (iEpisodesLength > iEpisodesPerPage)
+	    {
+	    	showHideNavButtons(true);
+	    }
+	  }
+
+
+	  /*
+		* show or hides the node with the given id
+		*/
+	  function showHide(id, hide)
+	  {
+
+      if (typeof asShowHide[id] == 'undefined' || asShowHide[id] == true || hide == true )
+        var fHide = true;
+      else
+        var fHide = false;
+
+      if (fHide == false)
+      {
+        showItem(id)
+      }
+      else
+      {
+
+        hideItem(id)
+      }
+    }
+
+    function showItem(id)
+    {
+      // if item is visible, there is nothing to do
+      if (asShowHide[id] == true)
+        return;
+
+      if ( typeof asShowHide[id] == 'undefined' )
+       asClasses[id] = document.getElementById(id).getAttribute('class');
+
+      if ( typeof asClasses[id] != 'undefined' && typeof asShowHide[id] != 'undefined' && asClasses[id] != 'hidden' )
+        var sClass = asClasses[id];
+      else
+        var sClass = 'visible';
+
+      asShowHide[id] = true;
+      document.getElementById(id).setAttribute('class',sClass);
+    }
+
+    function hideItem(id)
+    {
+      // if item is hidden, there is nothing to do
+      if (asShowHide[id] == false)
+        return;
+
+      var sClass = 'hidden';
+      if ( typeof asClasses[id] == 'undefined' )
+        asClasses[id] = document.getElementById(id).getAttribute('class');
+
+      asShowHide[id] = false;
+      document.getElementById(id).setAttribute('class',sClass);
+    }
+
+    var fAllhiden = false;
+    function hideAll()
+    {
+      for (var id in asShowHide)
+      {
+        if (fAllhiden == false)
+        {
+          if (asShowHide[id] == true)
+            hideItem(id);
+          else
+            asShowHide[id] = true;
+        }
+        else
+        {
+          if (asShowHide[id] == false)
+            showItem(id);
+          else
+            asShowHide[id] = false;
+        }
+
+      }
+      if (fAllhiden == false)
+      {
+        hideItem('bigInfo');
+        fAllhiden = true;
+      }
+
+      else
+      {
+        showItem('bigInfo');
+        fAllhiden = false;
+      }
+
+
+    }
+
+    function buildUrl(no)
+    {
+      return asEpisodeUrl[no];
+    }
+
+
+
+	  
+
+
+    --></script></head>
+<body bgproperties="fixed" bgcolor="#000000" onloadset="Play" onload="show(1)" focustext="#FFD700" FOCUSCOLOR="transparent" align="right" background="<TAGFORPARSING>Fanart<TAGFORPARSING>">
+<table id="bigInfo" class="main" align="left" border="0" cellpadding="0" cellspacing="0">
+<tr><td rowspan="4" width="320" align="center" valign="top">
+<table cellpadding="0" cellspacing="0"><tr height="240"><td valign="top"></td></tr>
+<tr height="420"><td valign="bottom" align="center">
+<table cellpadding="0" cellspacing="0">
+<tr><td id="PosterTd" align="center" class="noClassSet" width="NaN">
+<img src="<TAGFORPARSING>Poster<TAGFORPARSING>" width="240" height="360"/></td></tr></table>
+</td></tr></table></td><td align="center" height="0">
+<a TVID="HOME" href="All.html"/>
+<a TVID="RIGHT" href="<TAGFORPARSING>Right<TAGFORPARSING>"/>
+<a TVID="LEFT" href="<TAGFORPARSING>Left<TAGFORPARSING>"/>
+<a TVID="PREV" href="<TAGFORPARSING>Prev<TAGFORPARSING>"/>
+<a TVID="NEXT" href="<TAGFORPARSING>Next<TAGFORPARSING>"/>
+<a id="openEpisode" TVID="Play" name="Play" href="#" vod=""/>
+<a href="#" onclick="return  toggleEpisodeDetails();" tvid="TAB"/>
+<a TVID="PGUP" href="#" onclick="setFocus('first')"/>
+<a TVID="PGDN" href="#" onclick="setFocus('last')"/>
+<a href="#" onclick="return showHide('PosterTd');" tvid="CLEAR"/>
+<a href="#" class="visible" onclick="return hideAll();" tvid="BLUE"/></td>
+<td rowspan="4" valign="bottom" width="300">
+<table width="100%" border="0" background="pictures/back/20.png" align="left">
+<tr><td align="">
+<a href="<TAGFORPARSING>Filename<TAGFORPARSING>" vod="" id="playlist" name="playlist" onfocus="setPlaylistUrl();">
+<img src="pictures/folder_document.png" onmouseover="this.setAttribute(&#34;src&#34;,'pictures/folder_document.png')" onmouseout="this.setAttribute(&#34;src&#34;,'pictures/folder_closed.png')" align="top" id="playlistIcon"/>Play All</a></td></tr>
+<tr><td id="episodeNav" class="link" valign="top" align="">
+<TAGFORPARSINGINDENT>
+<div class="nowrap">
+<a class="link nowrap" href="<TAGFORPARSING>Filename<TAGFORPARSING>" vod="" id="a_e_<TAGFORPARSING>Index<TAGFORPARSING>" onfocus="show(<TAGFORPARSING>Index<TAGFORPARSING>)" onmouseover="show(<TAGFORPARSING>Index<TAGFORPARSING>)">
+<img src="pictures/bullet_triangle_glass_yellow.png" onmouseover="show(<TAGFORPARSING>Index<TAGFORPARSING>);this.src='pictures/bullet_triangle_glass_blue.png'" onmouseout="this.src='pictures/bullet_triangle_glass_yellow.png'" onfocussrc="pictures/bullet_triangle_glass_blue.png" align="top"/></a>
+<span id="s_e_<TAGFORPARSING>Index<TAGFORPARSING>"><TAGFORPARSING>EpisodName<TAGFORPARSING><a href="#" TVID="<TAGFORPARSING>EpisodNum<TAGFORPARSING>" onclick="setFocus(<TAGFORPARSING>Index<TAGFORPARSING>); return false;" id="t_e_<TAGFORPARSING>Index<TAGFORPARSING>"/></span>
+</div>
+<TAGFORPARSINGINDENT>
+</td></tr></table>
+<table border="0" width="100%">
+<tr><td height="10"/></tr></table></td></tr>
+<tr height="455">
+<td id="episodenInfo" align="center" valign="top">
+<table id="episodenInfos" class="hidden" width="99%" align="left" background="pictures/back/60.png" border="0" cellpadding="0" cellspacing="0">
+<tr><td valign="top">
+<table width="98%" align="center" border="0">
+<tr><td id="episodeName" class="episodeName" align="left" valign="top">_</td></tr>
+<tr><td><hr size="1" width="100%"/></td></tr>
+<tr><td id="episodeId" class="episodeID" align="left" valign="top">_</td></tr></table></td></tr></table></td></tr>
+<tr><td valign="bottom"><table width="98%" border="0" cellpadding="0" cellspacing="0"><tr><td id="movieInfos" class="noClassSet">
+<!--
+<table border="0" width="100%" background="pictures/back/40.png">
+<tr><td class="title3" width="5%">Source</td><td class="info" width="45%"><img src="pictures/thumb-HDTV.png"/></td><td class="title3" width="5%">Output</td><td class="info" width="45%"><img src="pictures/thumb-SDTV.png"/> 60.0Hz
+			</td></tr><tr><td class="title3" width="5%">Video</td><td class="info" width="45%">H.264</td><td class="title3" width="5%">Size</td><td class="info" width="45%">UNKNOWN</td></tr><tr><td class="title3" width="5%">Audio</td><td class="info" width="90%" valign="top" colspan="3">UNKNOWNUNKNOWN</td></tr><tr><td class="title3" width="5%">Subtitles</td><td class="info" width="45%">Yes</td><td class="title3" width="5%" valign="top"/><td class="info" width="45%" valign="top"/></tr></table>
+-->
+</td><td width="130" align="right" valign="bottom">
+<a class="link" href="<TAGFORPARSING>Left<TAGFORPARSING>"><img src="pictures/nav_left_yellow.png" onMouseOver="this.src='pictures/nav_left_blue.png'" onMouseOut="this.src='pictures/nav_left_yellow.png'" onfocussrc="pictures/nav_left_blue.png"/></a>
+<a class="link" href="<TAGFORPARSING>Right<TAGFORPARSING>"><img src="pictures/nav_right_yellow.png" onMouseOver="this.src='pictures/nav_right_blue.png'" onMouseOut="this.src='pictures/nav_right_yellow.png'" onfocussrc="pictures/nav_right_blue.png"/></a>
+<a href="#" onclick="return toggleInfo();" class="plotlink" tvid="info"><img src="pictures/information2.png" onMouseOver="this.src='pictures/information.png'" onMouseOut="this.src='pictures/information2.png'" onfocussrc="pictures/information.png"/></a>
+<a class="link" href="All.html"><img src="pictures/nav_up_small.png"/></a>
+</td></tr></table></td></tr>
+<tr align="left"><td valign="bottom">
+<table id="top_info" border="0" width="99%" background="pictures/back/45.png">
+<tr><td class="title1" valign="top"><div><TAGFORPARSING>Title<TAGFORPARSING></div>
+<div><span class="year">(<TAGFORPARSING>Year<TAGFORPARSING>)</span>
+<span class="title2">Season <TAGFORPARSING>Season<TAGFORPARSING></span></div></td>
+<td valign="top" align="right" width="120"> 
+</td></tr></table>
+<table border="0" width="100%"><tr><td height="10"/></tr></table></td></tr>
+</table>
+</body></html>

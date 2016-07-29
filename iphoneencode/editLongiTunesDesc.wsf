@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<job id="editLongDesc">
+
+    <script language="VBScript">
+    <![CDATA[
+        Function WSHInputBox(Message, Title, Value)
+            ' Provides an InputBox function for JScript
+            ' Can be called from JScript as:
+            ' var result = WSHInputBox("Enter a name", "Input", test);
+            WSHInputBox = InputBox(Message, Title, Value)
+        End Function
+    ]]>
+    </script>
+    <script language="JScript">
+    <![CDATA[
+        // Create the WshShell object (needed for using Popup).
+        var WshShell = WScript.CreateObject("WScript.Shell");
+	// iTunes stuff
+	var iTunesApp = WScript.CreateObject("iTunes.Application");
+	var i = 1;
+
+	for (i = 1; i <= iTunesApp.SelectedTracks.Count; i++)
+	{
+		var track = iTunesApp.SelectedTracks.Item(i);
+	        var result = WSHInputBox("Enter the new long description: ", "Edit long descript of "+track.name, track.description);
+        	if (result != null)   
+	        {  
+			track.LongDescription = result;        	 	
+	        } 
+		else {
+			break;
+		}
+	}
+    ]]>
+    </script>
+</job>
+

@@ -1,0 +1,134 @@
+body {
+  color: #888888;
+  font-family: Arial,Verdana,Helvetica, sans-serif;
+  font-size: 100%;
+  background-repeat: no-repeat;
+  /* margins help non-absolute positioning match how html is displayed on HDTV, when viewed on PC */
+  margin-top: 20px;
+	margin-bottom: 20px;
+	margin-right: 30px;
+	margin-left: 80px;
+}
+
+table.main {
+    width:1140px;
+    height:656px;
+}
+
+.title1 {
+    color: #FFD700;
+    font-size: 18pt;
+    font-weight : bold;
+    vertical-align: top;
+}
+
+.title2 {
+    color: #ffffff;
+    font-size: 14pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.title3 {
+    color: #FFD700;
+    font-size: 14pt;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+
+.title4 {
+    color: #FFD700;
+    font-size: 17pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.normal {
+    color: #FFFFFF;
+    font-size: 14pt;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+.info {
+    color: #ffffff;
+    font-size: 14pt;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+.gold {
+    color: #FFD700;
+    font-size: 14pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.year {
+    color: #FFD700;
+    font-size: 16pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.link {
+    color: #ffffff;
+    font-size: 14pt;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+div.episodeName{
+    visibility:hidden;
+}
+
+td.episodeName{
+    color: #FFD700;
+    font-size: 15pt;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+div.episodeId{
+    visibility:hidden;
+}
+
+td.episodeId{
+    color: #ffffff;
+    font-size: 15pt;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+img {
+    border: 0;
+    align: left;
+    vertical-align: top;
+}
+
+a {
+    font-size: 14pt;
+    color: red;
+    text-decoration: none;
+    vertical-align: top;
+    color: #FFFFFF;
+}
+
+tr.divider {
+    background-color: #AAAAAA;
+    height: 1px;
+}
+
+tr.spacer { height: 3px; }
+
+.nowrap {
+  white-space: nowrap;
+}
+
+hr {margin: 0;}
+
+.smallSize {color: #FFFFFF; font-size: 12pt; font-weight: bold;}
+
+.hidden {visibility:hidden;}
+.visible {visibility:visible;}

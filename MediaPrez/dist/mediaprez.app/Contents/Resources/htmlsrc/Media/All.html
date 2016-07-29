@@ -1,0 +1,49 @@
+<html><head><link rel="StyleSheet" type="text/css" href="exportindex_item_pch.css"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>Media</title><script type="text/javascript">
+<!--
+	var asTitles=[
+	<TAGFORPARSING>TitleList<TAGFORPARSING>
+	];
+
+  var title = 1;
+  var play = false;
+
+
+  function show(x, jsp)
+  {
+    if ( title == 1 )
+      title = document.getElementById('title');
+
+    title.firstChild.nodeValue = asTitles[x-1];
+    if (play == false)
+      play = document.getElementById('play');
+
+    play.setAttribute('href', jsp);
+    play.setAttribute('tvid', 'PLAY');
+
+  }
+  function hide(x)
+  {
+    if ( title == 1 )
+      title = document.getElementById('title');
+    title.firstChild.nodeValue = "";
+  }
+  --></script>
+		  </head>
+		  <body bgproperties="fixed" background="pictures/background.jpg" onloadset="1">
+			  <table border=0>
+				  <tr height="10"><td>&nbsp;</td></tr>
+				  <tr><td width="30">&nbsp;</td><td>
+			  <table class="movies" border="0">
+				  
+					  <TAGFORPARSINGINDENT>
+					  <td>
+					  <a href="<TAGFORPARSING>Filename<TAGFORPARSING>" TVID="<TAGFORPARSING>Index<TAGFORPARSING>" name="<TAGFORPARSING>Index<TAGFORPARSING>" onfocus="show(<TAGFORPARSING>Index<TAGFORPARSING>, '<TAGFORPARSING>Playlist<TAGFORPARSING>')" onblur="hide(<TAGFORPARSING>Index<TAGFORPARSING>)">
+					  <img src="<TAGFORPARSING>Poster<TAGFORPARSING>" width=152 height=241 onmouseover="show(<TAGFORPARSING>Index<TAGFORPARSING>, '<TAGFORPARSING>Playlist<TAGFORPARSING>')" onmouseout="hide(<TAGFORPARSING>Index<TAGFORPARSING>)"/>
+					  </a>
+					  </td>
+				  	  <TAGFORPARSING>ENDL<TAGFORPARSING>
+					  <TAGFORPARSINGINDENT>
+			  </tr>
+		          </table>
+                          </td></tr></table>
+	  </body></html>

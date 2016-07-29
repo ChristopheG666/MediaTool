@@ -14,7 +14,8 @@ from setuptools import setup
 APP = ['mediaprez.pyw']
 DATA_FILES = []
 OPTIONS = {'argv_emulation': True,
-           'resources': "tag.trash,config.txt,htmlsrc"}
+           'resources': "tag.trash,config.txt,htmlsrc",
+           'packages': ['PIL']}
 
 setup(
     app=APP,

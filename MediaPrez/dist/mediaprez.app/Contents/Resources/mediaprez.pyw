@@ -104,9 +104,9 @@ class Parser:
             return
         try:
             # if True:
-            #import PIL
+            import PIL
             import math
-            #from PIL import Image
+            from PIL import Image
 
             try:
                 # if True:

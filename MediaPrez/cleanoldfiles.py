@@ -11,33 +11,29 @@ if len(sys.argv) > 1:
 
 refanart = re.compile("(.*)\.Fanart$")
 
-todel = []
-
+filelist = []
 for root, _, files in os.walk(directory, topdown=False):
     for name in files:
-        filesplit = os.path.splitext(name)
-        if filesplit[1] in toclean:
-            filenamenoext = filesplit[0]
-            fanart = refanart.match(filenamenoext)
+        filelist.append({'dir': root, 'name': name, 'path': os.path.join(root, name),
+                         'ext': os.path.splitext(name)[1], 'noext': os.path.splitext(name)[0]})
+
+todel = []
+for f in filelist:
+        if f['ext'] in toclean:
+            fanart = refanart.match(f['noext'])
             if fanart is not None:
-                filenamenoext = fanart.group(1)
-            filename = os.path.join(directory, filenamenoext)
-            found = False
-            for mext in movieext:
-                if os.path.exists(filename + mext):
-                    found = True
-                    break
-
-            if found:
-                print("Do not delete {0} because file {1}".format(os.path.join(root, name), filename + mext))
+                f['noext'] = fanart.group(1)
+            match = [fm for fm in filelist if f['noext'] == fm['noext'] and fm['ext'] in movieext]
+            if len(match) > 0:
+                print("Do not delete {0} because file {1}".format(f['name'], ",".join([fm['name'] for fm in match])))
                 continue
-            print("To del {0}".format(os.path.join(root, name)))
-            todel.append(os.path.join(root, name))
+            print("To del {0}".format(f['name']))
+            todel.append(f['path'])
 
+if len(todel) > 0:
+    print("Are you sure you want to delete:\n{0}\n(y/n):".format("\n".join(todel)))
+    confirm = raw_input()
 
-print("Are you sure you want to delete:\n{0}\n(y/n):".format("\n".join(todel)))
-confirm = raw_input()
-
-if confirm.lower() == "y":
-    for f in todel:
-        os.remove(f)
+    if confirm.lower() == "y":
+        for f in todel:
+            os.remove(f)
